@@ -12,27 +12,26 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import Logo from "../../Utils/Logo/Logo";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
 
 // const pages = ["Products", "login", "Pricing", "Blog"];
 const pages = (
-  <Box sx={{display: "flex"}}>
-    <NavLink to="/product">
-      <Button sx={{ my: 2, color: "white", display: "block" }}>product</Button>
+  <Box sx={{ display: "flex" }}>
+    <NavLink to="/" style={{textDecoration: 'none'}}>
+      <Button variant="outlined" sx={{ my: 2, color: "white", display: "block" }}>Home</Button>
     </NavLink>
-    <NavLink to="/login">
-      <Button sx={{ my: 2, color: "white", display: "block" }}>login</Button>
-    </NavLink>
-    <NavLink >
-      <Button sx={{ my: 2, color: "white", display: "block" }}>blog</Button>
+    <NavLink style={{textDecoration: 'none'}}>
+      <Button variant="outlined" sx={{ my: 2, color: "white", display: "block" }}>blog</Button>
     </NavLink>
   </Box>
 );
-const settings = ["Dashboard", "Logout"];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState();
   const [anchorElUser, setAnchorElUser] = useState();
+  const { user, logOutUser } = useAuth();
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -83,11 +82,6 @@ const Navbar = () => {
               display: { xs: "block", md: "none" },
             }}
           >
-            {/* {pages.map((page) => (
-              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">{page}</Typography>
-              </MenuItem>
-            ))} */}
             {pages}
           </Menu>
         </Box>
@@ -120,11 +114,13 @@ const Navbar = () => {
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
+          {user? <Tooltip>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Remy Sharp" src={user?.photoURL} />
             </IconButton>
-          </Tooltip>
+          </Tooltip> : 
+          <Link to="/login" style={{textDecoration: 'none'}}><Button variant="contained" sx={{ my: 2, color: "white", display: "block"}}>login</Button></Link>
+          }
           <Menu
             sx={{ mt: "45px" }}
             id="menu-appbar"
@@ -141,11 +137,15 @@ const Navbar = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
+            {user? <MenuItem>
+              <Typography textAlign="center">{user?.displayName}</Typography>
+            </MenuItem> : ""}
+            <MenuItem>
+              <Link to="/dashboard" style={{textDecoration: 'none', color: 'black'}}><Typography textAlign="center">Dashboard</Typography></Link>
+            </MenuItem>
+            {user? <MenuItem onClick={()=> logOutUser()}>
+              <Typography textAlign="center">Logout</Typography>
+            </MenuItem> : " "}
           </Menu>
         </Box>
       </Toolbar>

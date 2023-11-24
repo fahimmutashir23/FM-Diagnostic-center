@@ -15,18 +15,23 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../Utils/Loading/Loading";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+
+const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
+  import.meta.env.VITE_IMG_API_KEY
+}`;
 
 const Registration = () => {
   const [blood, setBlood] = useState("A+");
   const [districtData, setDistrictData] = useState([]);
   const [district, setDistrict] = useState("Dhaka");
   const [upozilaData, setUpozilaData] = useState([]);
-  const [upozila, setUpozila] = useState('');
+  const [upozila, setUpozila] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const {signUpUser, logOutUser} = useAuth();
+  const { signUpUser, logOutUser, updateUser } = useAuth();
   const navigate = useNavigate();
-
+  const axiosPublic = useAxiosPublic();
 
   const handleBloodChange = (event) => {
     setBlood(event.target.value);
@@ -40,52 +45,77 @@ const Registration = () => {
 
   useEffect(() => {
     fetch("/district.json")
-      .then(res => res.json())
-      .then(data => setDistrictData(data));
+      .then((res) => res.json())
+      .then((data) => setDistrictData(data));
   }, []);
 
   useEffect(() => {
     fetch("/upozila.json")
-      .then(res => res.json())
-      .then(data => setUpozilaData(data));
+      .then((res) => res.json())
+      .then((data) => setUpozilaData(data));
   }, []);
 
-
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const name = e.target.name.value;
     const email = e.target.email.value;
     const district = e.target.district.value;
     const upozila = e.target.upozila.value;
     const blood = e.target.blood.value;
-    const photo = e.target.photo.value;
+    const photo = e.target.photo.files[0];
     const password = e.target.password.value;
     const confirm_password = e.target.confirm_password.value;
-    const userInfo = {name, email, district, upozila, blood, photo, password, confirm_password}
-    console.log(userInfo);
+    
 
-    if(password !== confirm_password){
-      setLoading(false)
+    if (password !== confirm_password) {
+      setLoading(false);
       return setErrorMsg("Password not matched");
     }
 
+    const imgFile = { image: photo };
+    const res = await axiosPublic.post(imgUploadUrl, imgFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    if (res.data.data.display_url) {
 
-    signUpUser(email, password)
-    .then(res => {
-        if(res.user){
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "Your Registration has successful",
-                showConfirmButton: false,
-                timer: 1500
-              });
-              logOutUser() && navigate('/login')
+      signUpUser(email, password).then((result) => {
+        if (result.user) {
+          Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Your Registration has successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          updateUser({
+            displayName: name,
+            photoURL: res.data.data.display_url,
+          });
+          const userInfo = {
+            name : name,
+            email: email,
+            district : district,
+            upozila : upozila,
+            blood : blood,
+            profileImage : res.data.data.display_url
+          };
+          
+          axiosPublic.post('/users', userInfo)
+          .then(res => {
+            console.log(res.data);
+          })
+
+          logOutUser() && navigate("/login");
+          e.target.reset();
         }
-    })
-
+      });
+    } else {
+      return setLoading(true);
+    }
+    setLoading(false);
   };
 
   return (
@@ -145,7 +175,9 @@ const Registration = () => {
             <MenuItem value="O+">O+</MenuItem>
             <MenuItem value="O-">O-</MenuItem>
           </Select>
-          <InputLabel sx={{mt: "20px"}} id="demo-simple-select-label">Select District</InputLabel>
+          <InputLabel sx={{ mt: "20px" }} id="demo-simple-select-label">
+            Select District
+          </InputLabel>
           <Select
             fullWidth
             required
@@ -161,7 +193,9 @@ const Registration = () => {
               </MenuItem>
             ))}
           </Select>
-          <InputLabel sx={{mt: "20px"}} id="demo-simple-select-label">Select Upozila</InputLabel>
+          <InputLabel sx={{ mt: "20px" }} id="demo-simple-select-label">
+            Select Upozila
+          </InputLabel>
           <Select
             fullWidth
             required
@@ -178,7 +212,9 @@ const Registration = () => {
             ))}
           </Select>
 
-          <InputLabel sx={{mt: "20px"}} id="photo-level">Your Profile Photo</InputLabel>
+          <InputLabel sx={{ mt: "20px" }} id="photo-level">
+            Your Profile Photo
+          </InputLabel>
           <TextField
             required
             fullWidth
@@ -208,9 +244,7 @@ const Registration = () => {
             id="confirm_password"
             autoComplete="current-password"
           />
-          <Typography sx={{color: "red"}}>
-            {errorMsg}
-          </Typography>
+          <Typography sx={{ color: "red" }}>{errorMsg}</Typography>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -219,9 +253,13 @@ const Registration = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2,}}
+            sx={{ mt: 3, mb: 2 }}
           >
-            {loading? <Loading color="#fafdfb" height="25" width="25"></Loading>: "Sign Up"}
+            {loading ? (
+              <Loading color="#fafdfb" height="25" width="25"></Loading>
+            ) : (
+              "Sign Up"
+            )}
           </Button>
           <Grid container>
             <Grid item xs>

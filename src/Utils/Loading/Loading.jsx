@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { Box } from "@mui/material";
 import { Watch } from "react-loader-spinner";
 
-const Loading = ({height, width, color}) => {
+const Loading = ({height, width, color, mt}) => {
   return (
-    <Box>
+    <Box sx={{display: 'flex', justifyContent: 'center', mt: {mt}}}>
       <Watch
         height={height}
         width={width}
@@ -23,6 +23,7 @@ Loading.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   color: PropTypes.string,
+  mt: PropTypes.number
 };
 
 export default Loading;

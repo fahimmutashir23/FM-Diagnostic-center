@@ -9,11 +9,34 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { signInUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    signInUser(email, password).then((res) => {
+      if(res.user){
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Login successful",
+        showConfirmButton: false,
+        timer: 1500,
+      }) && navigate(location?.state ? location.state : "/")
+      e.target.reset()
+    }
+    });
   };
+
   return (
     <Grid item component={Paper} elevation={3} square>
       <Box
