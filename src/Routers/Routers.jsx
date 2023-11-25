@@ -16,12 +16,16 @@ import UserHome from "../Pages/Dashboard/UserDashboard/UserHome/UserHome";
 import UserProfile from "../Pages/Dashboard/UserDashboard/UserProfile/UserProfile";
 import TestReport from "../Pages/Dashboard/UserDashboard/TestReport/TestReport";
 import Appointments from "../Pages/Dashboard/UserDashboard/Appointments/appointments";
+import AdminRouts from "../Routes/Adminrouts";
+import ErrorPage from "../Utils/ErrorPage/ErrorPage";
+import AllTestPage from "../Pages/AllTestPage/AllTestPage";
 
 
 const Routers = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout></MainLayout>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: "/",
@@ -35,6 +39,10 @@ const Routers = createBrowserRouter([
                 path: "/registration",
                 element: <Registration></Registration>
             },
+            {
+                path: '/allTest',
+                element: <AllTestPage></AllTestPage>
+            }
         ]
     },
     {
@@ -44,48 +52,48 @@ const Routers = createBrowserRouter([
             //admin releted routes
             {
                 path: '/dashboard',
-                element: <AdminHome></AdminHome>
+                element: <PrivetRoute><AdminHome></AdminHome></PrivetRoute>
             },
             {
                 path: '/dashboard/allUser',
-                element: <AllUser></AllUser>
+                element: <AdminRouts><AllUser></AllUser></AdminRouts>
             },
             {
                 path: '/dashboard/allTest',
-                element: <AllTest></AllTest>
+                element: <AdminRouts><AllTest></AllTest></AdminRouts>
             },
             {
                 path: '/dashboard/addTest',
-                element: <AddTest></AddTest>
+                element: <AdminRouts><AddTest></AddTest></AdminRouts>
             },
             {
                 path: '/dashboard/allBanner',
-                element: <AllBanner></AllBanner>
+                element: <AdminRouts><AllBanner></AllBanner></AdminRouts>
             },
             {
                 path: '/dashboard/addBanner',
-                element: <AddBanner></AddBanner>
+                element: <AdminRouts><AddBanner></AddBanner></AdminRouts>
             },
             {
                 path: '/dashboard/reservation',
-                element: <Reservation></Reservation>
+                element: <AdminRouts><Reservation></Reservation></AdminRouts>
             },
             // user routes
             {
                 path: '/dashboard/userHome',
-                element: <UserHome></UserHome>
+                element: <PrivetRoute><UserHome></UserHome></PrivetRoute>
             },
             {
                 path: '/dashboard/myProfile',
-                element: <UserProfile></UserProfile>
+                element: <PrivetRoute><UserProfile></UserProfile></PrivetRoute>
             },
             {
                 path: '/dashboard/testResult',
-                element: <TestReport></TestReport>
+                element: <PrivetRoute><TestReport></TestReport></PrivetRoute>
             },
             {
                 path: '/dashboard/appointment',
-                element: <Appointments></Appointments>
+                element: <PrivetRoute><Appointments></Appointments></PrivetRoute>
             },
         ]
     }

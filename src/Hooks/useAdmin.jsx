@@ -11,7 +11,7 @@ const useAdmin = () => {
         queryKey: [user?.email, "admin"],
         queryFn: async() => {
             const res = await axiosSecure.post(`/users/admin/${user?.email}`)
-            return res.data
+            return res.data.admin
         }
     })
     return [isAdmin, adminLoading]

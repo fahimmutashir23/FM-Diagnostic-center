@@ -13,10 +13,12 @@ import {
   AddCircleSharp,
   Biotech,
   CalendarMonth,
+  CalendarMonthOutlined,
   Home,
   Person,
   Rectangle,
 } from "@mui/icons-material";
+import useAdmin from "../../../Hooks/useAdmin";
 
 const Sidebar = () => {
   const [state, setState] = useState({
@@ -34,12 +36,12 @@ const Sidebar = () => {
     setState({ ...state, [anchor]: open });
   };
 
-  const admin = true;
+  const [isAdmin] = useAdmin()
 
   return (
     <div>
       <Box
-        sx={{ width: "250px", backgroundColor: "#8F9CFF", minHeight: "100vh" }}
+        sx={{ width: "250px", backgroundColor: "#BEADFA", height: "100vh" }}
         role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
@@ -47,7 +49,7 @@ const Sidebar = () => {
         <Box sx={{ width: "150px", mx: "auto" }}>
           <Logo></Logo>
         </Box>
-        {admin ? (
+        {isAdmin ? (
           <List>
             <Link
               to="/dashboard"
@@ -198,7 +200,7 @@ const Sidebar = () => {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Biotech />
+                    <CalendarMonthOutlined />
                   </ListItemIcon>
                   <ListItemText primary="Upcoming Appointment" />
                 </ListItemButton>

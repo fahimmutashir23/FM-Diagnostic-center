@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -13,7 +12,7 @@ import { InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Utils/Loading/Loading";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
@@ -25,8 +24,8 @@ const Registration = () => {
   const [blood, setBlood] = useState("A+");
   const [districtData, setDistrictData] = useState([]);
   const [district, setDistrict] = useState("Dhaka");
-  const [upozilaData, setUpozilaData] = useState([]);
   const [upozila, setUpozila] = useState("");
+  const [upozilaData, setUpozilaData] = useState([])
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { signUpUser, logOutUser, updateUser } = useAuth();
@@ -36,8 +35,11 @@ const Registration = () => {
   const handleBloodChange = (event) => {
     setBlood(event.target.value);
   };
-  const handleDistrictChange = (event) => {
+  const handleDistrictChange = async (event) => {
     setDistrict(event.target.value);
+
+    const res = await axiosPublic(`/upozila?district_id=${event.target.value.id}`)
+    setUpozilaData(res.data)
   };
   const handleUpozilaChange = (event) => {
     setUpozila(event.target.value);
@@ -48,12 +50,7 @@ const Registration = () => {
       .then((res) => res.json())
       .then((data) => setDistrictData(data));
   }, []);
-
-  useEffect(() => {
-    fetch("/upozila.json")
-      .then((res) => res.json())
-      .then((data) => setUpozilaData(data));
-  }, []);
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,9 +101,7 @@ const Registration = () => {
           };
           
           axiosPublic.post('/users', userInfo)
-          .then(res => {
-            console.log(res.data);
-          })
+          .then(() => { })
 
           logOutUser() && navigate("/login");
           e.target.reset();
@@ -183,12 +178,12 @@ const Registration = () => {
             required
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={district}
+            value={district.name}
             name="district"
             onChange={handleDistrictChange}
           >
             {districtData?.map((item, idx) => (
-              <MenuItem key={idx} value={item.name}>
+              <MenuItem key={idx} value={item}>
                 {item.name}
               </MenuItem>
             ))}
@@ -263,12 +258,12 @@ const Registration = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/registration" variant="body2">
+              <Link to="/login" variant="body2">
                 {"Already have an account? Sign in"}
               </Link>
             </Grid>

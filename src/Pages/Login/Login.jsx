@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,7 +10,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { signInUser } = useAuth();
@@ -31,7 +30,7 @@ const Login = () => {
         title: "Login successful",
         showConfirmButton: false,
         timer: 1500,
-      }) && navigate(location?.state ? location.state : "/")
+      }) && navigate(location?.state ? location.state : "/dashboard")
       e.target.reset()
     }
     });
@@ -95,7 +94,7 @@ const Login = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/registration" variant="body2">
+              <Link to="/registration" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

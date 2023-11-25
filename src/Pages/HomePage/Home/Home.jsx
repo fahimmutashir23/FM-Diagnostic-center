@@ -1,9 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import Banner from "../../../Components/Home/Banner/Banner";
 
 const Home = () => {
     return (
         <Grid sx={{minHeight: "calc(90vh)"}}>
-            <Typography variant="h4">this is home</Typography>            
+            <Banner></Banner>            
         </Grid>
     );
 };
