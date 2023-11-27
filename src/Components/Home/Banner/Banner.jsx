@@ -16,6 +16,7 @@ const Banner = () => {
 
   return (
     <Box
+    data-aos='fade-down'
       sx={{
         minHeight: "70vh",
         mt: 1,

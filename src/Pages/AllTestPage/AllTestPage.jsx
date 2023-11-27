@@ -60,7 +60,7 @@ const AllTestPage = () => {
                   </Typography>
                   <Typography sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '18px', fontWeight: 'bold'}}>
                     Test rate : ${test.price} 
-                    {status === 'active' ? <Link to={`/details/${test._id}`}><Button variant="contained">Details</Button></Link> : <Link to={`/details/${test._id}`}><Button  variant="contained">Details</Button></Link>}
+                    {status === 'active' ? <Link to={`/details/${test._id}`}><Button variant="contained">Details</Button></Link> : <Link to={`/details/${test._id}`}><Button disabled variant="contained">Details</Button></Link>}
                   </Typography>
                 </CardContent>
               </CardActionArea>    

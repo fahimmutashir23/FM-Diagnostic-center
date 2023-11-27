@@ -55,8 +55,17 @@ const AllBanner = () => {
     });
   };
 
-  const handleDisplayBanner = (id) => {
-    console.log(id);
+  const handleDisplayBanner = async (id) => {
+    const res = await axiosSecure.put(`/banners/${id}`);
+    console.log(res.data);
+    if (res.data.modifiedCount > 0) {
+      refetch();
+      Swal.fire({
+        title: "Displayed",
+        text: "Your Banner is now Displayed.",
+        icon: "success",
+      });
+    }
   };
 
   return (
@@ -82,13 +91,9 @@ const AllBanner = () => {
               </TableCell>
               <TableCell align="center">{banner.isActive}</TableCell>
               <TableCell align="center">
-                {banner.isActive === "false" ? (
-                  <Button onClick={() => handleDisplayBanner(banner._id)}>
-                    Show Home
-                  </Button>
-                ) : (
-                  <Button disabled>Show Home</Button>
-                )}
+                <Button onClick={() => handleDisplayBanner(banner._id)}>
+                  {banner.isActive === "false" ? 'Show Home' : 'Hide Home'}
+                </Button>
               </TableCell>
               <TableCell align="center">
                 <Button
