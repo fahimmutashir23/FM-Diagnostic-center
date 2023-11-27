@@ -11,7 +11,8 @@ const SectionTitle = ({title}) => {
               textAlign: "center",
               mt: 4,
               borderBottom: 2,
-              
+              color: '#9400FF',
+              mb: 1
             }}
           >
             {title}

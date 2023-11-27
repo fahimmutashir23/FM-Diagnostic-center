@@ -29,8 +29,8 @@ const style = {
 const AllUser = () => {
   const axiosSecure = useAxiosSecure();
   const [allUsers, isPending, refetch] = useAllUser();
-  const [open, setOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({});
+  const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   if (isPending) {

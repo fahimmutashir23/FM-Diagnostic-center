@@ -9,20 +9,33 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import { useState } from "react";
+import moment from "moment/moment";
 
 const AllTestPage = () => {
   const axiosPublic = useAxiosPublic();
-  const { data = [], isPending } = useQuery({
+  const {user} = useAuth();
+  const [status, setStatus] = useState('');
+  const todayDate = moment().format("YYYY-MM-DD");
+
+  axiosPublic(`/users?email=${user?.email}`)
+  .then(res => {setStatus(res.data[0].active_status)})
+
+  const { data = [], isPending, refetch } = useQuery({
     queryKey: ["allTests"],
     queryFn: async () => {
       const res = await axiosPublic(`/tests`);
-      return res.data;
+      const currentData = res.data.filter(item => item.date > todayDate)
+      return currentData;
     },
   });
+
   if (isPending) {
     return <Loading color="black"></Loading>;
   }
-  console.log(data);
+  refetch()
+
   return (
     <Box>
       <SectionTitle title="All Test"></SectionTitle>
@@ -47,10 +60,10 @@ const AllTestPage = () => {
                   </Typography>
                   <Typography sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '18px', fontWeight: 'bold'}}>
                     Test rate : ${test.price} 
-                    <Link to='/details'><Button variant="contained">Details</Button></Link>
+                    {status === 'active' ? <Link to={`/details/${test._id}`}><Button variant="contained">Details</Button></Link> : <Link to={`/details/${test._id}`}><Button  variant="contained">Details</Button></Link>}
                   </Typography>
                 </CardContent>
-              </CardActionArea>
+              </CardActionArea>    
             </Card>
           </Grid>
         ))}

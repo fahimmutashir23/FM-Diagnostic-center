@@ -112,6 +112,7 @@ const AllTest = () => {
     const date = e.target.date.value;
     const price = e.target.price.value;
     const details = e.target.details.value;
+    const slot = e.target.slot.value;
 
     const imgFile = { image: photo };
     const res = await axiosSecure.post(imgUploadUrl, imgFile, {
@@ -127,6 +128,7 @@ const AllTest = () => {
         date: date,
         price: parseInt(price),
         details: details,
+        slot : slot
       };
 
       const response = await axiosSecure.put(`/tests/${id}`, testInfo);
@@ -223,13 +225,16 @@ const AllTest = () => {
                   />
                 </Grid>
                 <Grid item sm={12} md={6}>
-                  <TextField required fullWidth name="photo" type="file" />
-                </Grid>
-                <Grid item sm={12} md={6}>
                   <TextField required fullWidth name="date" type="date" />
                 </Grid>
                 <Grid item sm={12} md={6}>
                   <TextField required fullWidth label="Price" name="price" />
+                </Grid>
+                <Grid item sm={12} md={6}>
+                  <TextField required fullWidth label="slot" name="slot" />
+                </Grid>
+                <Grid item sm={12} md={12}>
+                  <TextField required fullWidth name="photo" type="file" />
                 </Grid>
                 <Grid item sm={12} md={12}>
                   <TextField

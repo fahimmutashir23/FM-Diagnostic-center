@@ -41,12 +41,12 @@ const Sidebar = () => {
   return (
     <div>
       <Box
-        sx={{ width: "250px", backgroundColor: "#BEADFA", height: "100vh" }}
+        sx={{ width: "250px", backgroundColor: "#BEADFA", height: "100%"}}
         role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
       >
-        <Box sx={{ width: "150px", mx: "auto" }}>
+        <Box sx={{ width: "150px", mx: "auto"}}>
           <Logo></Logo>
         </Box>
         {isAdmin ? (
@@ -188,7 +188,7 @@ const Sidebar = () => {
                   <ListItemIcon>
                     <Biotech />
                   </ListItemIcon>
-                  <ListItemText primary="Test Result" />
+                  <ListItemText primary="Booked Test" />
                 </ListItemButton>
               </ListItem>
             </Link>
@@ -209,9 +209,9 @@ const Sidebar = () => {
           </List>
         )}
 
-        <Divider />
 
         <List>
+        <Divider />
           <Link to="/" style={{ textDecoration: "none", color: "black" }}>
             <ListItem disablePadding>
               <ListItemButton>

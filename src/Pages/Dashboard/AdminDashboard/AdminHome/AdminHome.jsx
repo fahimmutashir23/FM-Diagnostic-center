@@ -8,7 +8,7 @@ const AdminHome = () => {
   return (
     <Box sx={{display: 'flex'}}>
       <Typography variant="h4" sx={{}}>
-        Hellow! <br />{" "}
+        Hello! <br />{" "}
         <Typography fontWeight="bold" variant="h3">
           {user.displayName}
         </Typography>

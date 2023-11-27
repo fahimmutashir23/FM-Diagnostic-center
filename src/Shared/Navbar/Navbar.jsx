@@ -15,22 +15,28 @@ import Logo from "../../Utils/Logo/Logo";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 
-// const pages = ["Products", "login", "Pricing", "Blog"];
-const pages = (
-  <Box sx={{ display: "flex" }}>
-    <NavLink to="/" style={{textDecoration: 'none'}}>
-      <Button variant="outlined" sx={{ my: 2, color: "white", display: "block" }}>Home</Button>
-    </NavLink>
-    <NavLink style={{textDecoration: 'none'}}>
-      <Button variant="outlined" sx={{ my: 2, color: "white", display: "block" }}>blog</Button>
-    </NavLink>
-  </Box>
-);
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState();
   const [anchorElUser, setAnchorElUser] = useState();
   const { user, logOutUser } = useAuth();
+
+  const pages = (
+    <Box sx={{ display: "flex" }}>
+      <NavLink to="/" style={{textDecoration: 'none'}}>
+        <Button  sx={{ my: 2, color: "white", display: "block" }}>Home</Button>
+      </NavLink>
+      <NavLink to='/blog' style={{textDecoration: 'none'}}>
+        <Button  sx={{ my: 2, color: "white", display: "block" }}>blog</Button>
+      </NavLink>
+      <NavLink to='/contact' style={{textDecoration: 'none'}}>
+        <Button  sx={{ my: 2, color: "white", display: "block" }}>Contact</Button>
+      </NavLink>
+      {user && <NavLink to='/doctorsMeet' style={{textDecoration: 'none'}}>
+        <Button  sx={{ my: 2, color: "white", display: "block" }}>Doctors Meet</Button>
+      </NavLink>}
+    </Box>
+  );
 
 
   const handleOpenNavMenu = (event) => {

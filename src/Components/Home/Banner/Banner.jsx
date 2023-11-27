@@ -1,25 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
 import bannerBG from "../../../assets/image/medicalBanner.jpg";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Utils/Loading/Loading";
 import { Send } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import useBannerData from "../../../Hooks/useBannerData";
 
 const Banner = () => {
-  const axiosPublic = useAxiosPublic();
-
-  const {
-    data: banner = [],
-    isPending,
-    refetch,
-  } = useQuery({
-    queryKey: ["banner"],
-    queryFn: async () => {
-      const res = await axiosPublic(`/banners?isActive=true`);
-      return res.data[0];
-    },
-  });
+ 
+  const [banner, isPending, refetch] = useBannerData()
+  
   if (isPending) {
     return <Loading color="black" height="40" width="40" mt={6}></Loading>;
   }

@@ -15,10 +15,14 @@ import Reservation from "../Pages/Dashboard/AdminDashboard/Reservation/Reservati
 import UserHome from "../Pages/Dashboard/UserDashboard/UserHome/UserHome";
 import UserProfile from "../Pages/Dashboard/UserDashboard/UserProfile/UserProfile";
 import TestReport from "../Pages/Dashboard/UserDashboard/TestReport/TestReport";
-import Appointments from "../Pages/Dashboard/UserDashboard/Appointments/appointments";
+import Appointments from "../Pages/Dashboard/UserDashboard/Appointments/Appointments";
 import AdminRouts from "../Routes/Adminrouts";
 import ErrorPage from "../Utils/ErrorPage/ErrorPage";
 import AllTestPage from "../Pages/AllTestPage/AllTestPage";
+import Details from "../Pages/Details/Details";
+import Blog from "../Pages/Blog/Blog";
+import Contact from "../Pages/Contact/Contact";
+import DoctorsMeet from "../Pages/DoctorsMeet/DoctorsMeet";
 
 
 const Routers = createBrowserRouter([
@@ -42,7 +46,23 @@ const Routers = createBrowserRouter([
             {
                 path: '/allTest',
                 element: <AllTestPage></AllTestPage>
-            }
+            },
+            {
+                path: '/details/:id',
+                element: <PrivetRoute><Details></Details></PrivetRoute>
+            },
+            {
+                path: '/blog',
+                element: <Blog></Blog>
+            },
+            {
+                path: '/contact',
+                element: <Contact></Contact>
+            },
+            {
+                path: '/doctorsMeet',
+                element: <DoctorsMeet></DoctorsMeet>
+            },
         ]
     },
     {
