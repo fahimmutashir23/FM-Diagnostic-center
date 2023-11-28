@@ -9,11 +9,20 @@ import Paper from "@mui/material/Paper";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../../Utils/Loading/Loading";
-import { Box, Button, Grid, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Modal,
+  Pagination,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Delete, Update } from "@mui/icons-material";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,17 +64,28 @@ const AllTest = () => {
   const axiosSecure = useAxiosSecure();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-  const [id, setId] = useState('');
+  const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [totalData, setTotalData] = useState(0);
+  const [page, setPage] = useState(0);
+
+  const totalPage = Math.ceil(parseInt(totalData) / 6);
+  const paginateBtn = [...Array(totalPage).keys()];
+
+  axiosSecure("/totalTests").then((res) => setTotalData(res.data.count));
+
+  const handleChange = (event, value) => {
+    setPage(value - 1);
+  };
 
   const {
     data: allTest = [],
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["allTest"],
+    queryKey: ["AdminAllTest"],
     queryFn: async () => {
-      const res = await axiosSecure("/tests");
+      const res = await axiosSecure(`/tests?page=${page}`);
       return res.data;
     },
   });
@@ -101,12 +121,12 @@ const AllTest = () => {
 
   const handleUpdate = (id) => {
     setOpen(true);
-    setId(id)
+    setId(id);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const name = e.target.name.value;
     const photo = e.target.photo.files[0];
     const date = e.target.date.value;
@@ -128,13 +148,13 @@ const AllTest = () => {
         date: date,
         price: parseInt(price),
         details: details,
-        slot : slot
+        slot: slot,
       };
 
       const response = await axiosSecure.put(`/tests/${id}`, testInfo);
-      setLoading(false)
+      setLoading(false);
       if (response.data.modifiedCount > 0) {
-        refetch()
+        refetch();
         Swal.fire({
           position: "top",
           icon: "success",
@@ -149,6 +169,7 @@ const AllTest = () => {
 
   return (
     <TableContainer component={Paper} sx={{ overflow: "hidden" }}>
+      <PageTitle title='All Test'></PageTitle>
       <SectionTitle title="All Test"></SectionTitle>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
@@ -168,7 +189,7 @@ const AllTest = () => {
               <StyledTableCell align="center">${test.price}</StyledTableCell>
               <StyledTableCell align="right">
                 <Button
-                  onClick={()=>handleUpdate(test._id)}
+                  onClick={() => handleUpdate(test._id)}
                   sx={{ mr: 1 }}
                   variant="outlined"
                   startIcon={<Update />}
@@ -187,6 +208,18 @@ const AllTest = () => {
           ))}
         </TableBody>
       </Table>
+      <Box
+        component={"div"}
+        sx={{ display: "flex", justifyContent: "end", my: 1 }}
+      >
+        <Pagination
+          variant="outlined"
+          shape="rounded"
+          count={paginateBtn.length}
+          page={page + 1}
+          onChange={handleChange}
+        />
+      </Box>
       <Modal
         open={open}
         onClose={handleClose}
@@ -196,7 +229,7 @@ const AllTest = () => {
         <Box sx={style}>
           <Typography
             fontWeight="bold"
-            sx={{ textAlign: "center", mb: 3}}
+            sx={{ textAlign: "center", mb: 3 }}
             id="modal-modal-title"
             variant="h4"
             component="h2"
@@ -204,15 +237,15 @@ const AllTest = () => {
             Update Test
           </Typography>
 
-          <Paper sx={{ width: "100%" ,}}>
+          <Paper sx={{ width: "100%" }}>
             <Box
               component="form"
               onSubmit={handleSubmit}
               sx={{
-                "& .MuiTextField-root": { mt: 4 ,},
+                "& .MuiTextField-root": { mt: 4 },
               }}
             >
-              <Grid container spacing={2} sx={{p: 1}}>
+              <Grid container spacing={2} sx={{ p: 1 }}>
                 <Grid item sm={12} md={6}>
                   <TextField
                     required
@@ -253,10 +286,10 @@ const AllTest = () => {
                 sx={{ mt: 3, mb: 2 }}
               >
                 {loading ? (
-              <Loading color="#fafdfb" height="25" width="25"></Loading>
-            ) : (
-              "Update Test"
-            )}
+                  <Loading color="#fafdfb" height="25" width="25"></Loading>
+                ) : (
+                  "Update Test"
+                )}
               </Button>
             </Box>
           </Paper>

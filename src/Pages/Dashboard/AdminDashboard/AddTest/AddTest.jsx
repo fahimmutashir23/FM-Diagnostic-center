@@ -2,6 +2,7 @@ import { Box, Button, Grid, Paper, TextField } from "@mui/material";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_API_KEY
@@ -53,6 +54,7 @@ const AddTest = () => {
   };
   return (
     <Paper sx={{ width: "100%" }}>
+      <PageTitle title="All Test"></PageTitle>
       <SectionTitle title="Add Test"></SectionTitle>
       <Box
         component="form"

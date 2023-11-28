@@ -188,7 +188,7 @@ const Sidebar = () => {
                   <ListItemIcon>
                     <Biotech />
                   </ListItemIcon>
-                  <ListItemText primary="Booked Test" />
+                  <ListItemText primary="Test Report" />
                 </ListItemButton>
               </ListItem>
             </Link>

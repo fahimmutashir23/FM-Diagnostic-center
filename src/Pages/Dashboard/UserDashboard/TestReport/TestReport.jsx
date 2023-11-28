@@ -5,22 +5,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, ImageListItem, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../Utils/Loading/Loading";
-import ReactPrint from "react-to-print";
-import { useRef } from "react";
-import logo from "../../../../assets/image/logo/FM DIAGNOSTIC.png";
-import moment from "moment/moment";
+import { Link } from "react-router-dom";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const TestReport = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
-  const ref = useRef();
-  const date = moment().format('DD-MM-YYYY')
 
   const { data: testResult = [], isPending } = useQuery({
     queryKey: ["testResult"],
@@ -30,11 +26,12 @@ const TestReport = () => {
     },
   });
   if (isPending) {
-    return <Loading color="black"></Loading>;
+    return <Loading color="black" height='40' width='40'></Loading>;
   }
 
   return (
     <TableContainer component={Paper}>
+      <PageTitle title='Test Report'></PageTitle>
       <SectionTitle title="Test Result"></SectionTitle>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -58,31 +55,12 @@ const TestReport = () => {
                 {idx + 1}. {test.testName}
               </TableCell>
               <TableCell align="right">
-                <ReactPrint
-                  trigger={() => (
-                    <Button variant="contained">Print Result</Button>
-                  )}
-                  content={() => ref.current}
-                ></ReactPrint>
+                <Link to={`/report/${test.testName}`}><Button variant="contained">View Report</Button></Link>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Box  sx={{ display: "none" }}>
-        <Box ref={ref}>
-          <ImageListItem component={"div"} sx={{ width: "200px" }}>
-            <img src={logo} alt="logo" />
-          </ImageListItem>
-          <Typography sx={{
-            fontSize: '1.5rem',
-            fontWeight: "bold",
-            textAlign: 'center',
-            mt: 4
-          }}>Your Test Result Here</Typography>
-          <Typography>date : {date}</Typography>
-        </Box>
-      </Box>
     </TableContainer>
   );
 };

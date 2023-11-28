@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../Utils/Loading/Loading";
 import Swal from "sweetalert2";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -83,6 +84,7 @@ const Appointments = () => {
   };
   return (
     <TableContainer component={Paper} sx={{ overflow: "hidden" }}>
+      <PageTitle title='Appointment'></PageTitle>
       <SectionTitle title="Upcoming Appointment"></SectionTitle>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>

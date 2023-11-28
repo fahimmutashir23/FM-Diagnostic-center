@@ -18,6 +18,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import useBannerData from "../../Hooks/useBannerData";
+import PageTitle from "../../Utils/PageTitle/PageTitle";
 
 const style = {
   position: "absolute",
@@ -76,6 +77,7 @@ const Details = () => {
       md={12}
       sx={{ display: "flex", justifyContent: "center", my: 6 }}
     >
+      <PageTitle title='Details'></PageTitle>
       <Card sx={{ backgroundColor: "#A6F6FF" }}>
         <CardActionArea>
           <CardMedia

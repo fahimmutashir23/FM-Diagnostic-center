@@ -6,7 +6,14 @@ import Lottie from "../../../../Utils/Lottie/Lottie";
 const AdminHome = () => {
   const { user } = useAuth();
   return (
-    <Box sx={{display: 'flex'}}>
+    <Box component={"div"}
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+    }}>
+      <Box sx={{display: 'flex'}}>
       <Typography variant="h4" sx={{}}>
         Hello! <br />{" "}
         <Typography fontWeight="bold" variant="h3">
@@ -14,6 +21,7 @@ const AdminHome = () => {
         </Typography>
       </Typography>
       <Lottie></Lottie>
+    </Box>
     </Box>
   );
 };

@@ -13,6 +13,7 @@ import useAllUser from "../../../../Hooks/useAllUser";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const style = {
   position: "absolute",
@@ -63,6 +64,7 @@ const AllUser = () => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <PageTitle title='All User'></PageTitle>
       <TableContainer sx={{ maxHeight: 440 }}>
         <SectionTitle title="All User" />
         <Table stickyHeader aria-label="sticky table">

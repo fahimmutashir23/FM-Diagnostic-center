@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Utils/Loading/Loading";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import PageTitle from "../../Utils/PageTitle/PageTitle";
 
 const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_API_KEY
@@ -97,7 +98,8 @@ const Registration = () => {
             district : district,
             upozila : upozila,
             blood : blood,
-            profileImage : res.data.data.display_url
+            profileImage : res.data.data.display_url,
+            active_status : "active"
           };
           
           axiosPublic.post('/users', userInfo)
@@ -106,7 +108,11 @@ const Registration = () => {
           logOutUser() && navigate("/login");
           e.target.reset();
         }
-      });
+      })
+      .catch(() => {
+        setErrorMsg("This email Already used")
+        e.target.reset()
+      })
     } else {
       return setLoading(true);
     }
@@ -125,6 +131,7 @@ const Registration = () => {
           alignItems: "center",
         }}
       >
+        <PageTitle title='SinUp'></PageTitle>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>

@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Divider, IconButton, InputBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,11 +8,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
-import { Delete } from "@mui/icons-material";
+import { Delete, MenuOutlined, Search } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../../Utils/Loading/Loading";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { useState } from "react";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,20 +38,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Reservation = () => {
   const axiosSecure = useAxiosSecure();
+  const [search, setSearch] = useState('')
+  console.log(search);
 
   const {
     data = [],
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["bookedTest"],
+    queryKey: ["reservetion"],
     queryFn: async () => {
-      const res = await axiosSecure(`/payments`);
+      const res = await axiosSecure(`/payments?search=${search}`);
       return res.data;
     },
   });
   if (isPending) {
     return <Loading color="black"></Loading>;
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const result = e.target.search.value;
+    setSearch(result)
   }
 
   const handleDelete = (id) => {
@@ -105,9 +115,31 @@ const Reservation = () => {
     }
   };
 
+
   return (
     <TableContainer component={Paper} sx={{ overflow: "hidden" }}>
       <SectionTitle title="Reservation"></SectionTitle>
+      <PageTitle title='Reservation'></PageTitle>
+      <Paper
+        component="form"
+        onSubmit={handleSearch}
+        sx={{ p: "2px 4px", display: "flex", alignItems: "center", maxWidth: 400, mx: 'auto', mt: 5, mb: 1 }}
+      >
+        <IconButton sx={{ p: "10px" }} aria-label="menu">
+          <MenuOutlined />
+        </IconButton>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search Test"
+          name="search"
+          inputProps={{ "aria-label": "search google maps" }}
+        />
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+        <IconButton type="submit" color="primary" sx={{ p: "10px" }} aria-label="directions">
+        <Search />
+        </IconButton>
+      </Paper>
+
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>

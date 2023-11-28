@@ -21,6 +21,7 @@ import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import { Update } from "@mui/icons-material";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const style = {
   position: "absolute",
@@ -110,6 +111,7 @@ const UserProfile = () => {
 
   return (
     <Paper>
+      <PageTitle title='Profile'></PageTitle>
       <SectionTitle title="User Profile"></SectionTitle>
       <div
         style={{

@@ -9,7 +9,7 @@ const useAllUser = () => {
     isPending,
     refetch,
   } = useQuery({
-    queryKey: "allUser",
+    queryKey: ["allUser"],
     queryFn: async () => {
       const res = await axiosSecure("/users");
       return res.data;

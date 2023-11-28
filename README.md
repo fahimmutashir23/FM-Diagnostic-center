@@ -1,8 +1,15 @@
-# React + Vite
+# FM Diagnostic Center
+## live link: https://impossible-help.surge.sh/
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### About This Project
+* This is a Diagnostic center website. I am using just **MaterialUI** in entire Project not using Tailwind CSS. It's first time i using this library that's why UI make simple.
 
-Currently, two official plugins are available:
+* I'm used **react to print** library for deliver test result and user can download or print test as PDF file. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Used **Page Title** feature.
+
+* For registration select a district after that only show those upozila that is under this selected district.
+
+* Admin can't apply for test.
+* Users can request for direct talk with doctor via google meet or any platform in (Doctors meet) page.
+* When admin select banner if he active multiple banner, only first active banner show in home page.

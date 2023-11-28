@@ -27,7 +27,7 @@ const FeaturedTest = () => {
   const [status, setStatus] = useState('');
 
   axiosPublic(`/users?email=${user?.email}`)
-  .then(res => {setStatus(res.data[0].active_status)})
+  .then(res => {setStatus(res.data[0]?.active_status)})
 
   const { data = [], isPending } = useQuery({
     queryKey: ["featured"],

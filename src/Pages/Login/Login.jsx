@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import PageTitle from "../../Utils/PageTitle/PageTitle";
 
 const Login = () => {
   const { signInUser } = useAuth();
@@ -30,7 +31,7 @@ const Login = () => {
         title: "Login successful",
         showConfirmButton: false,
         timer: 1500,
-      }) && navigate(location?.state ? location.state : "/dashboard")
+      }) && navigate(location?.state ? location.state : "/")
       e.target.reset()
     }
     });
@@ -48,6 +49,7 @@ const Login = () => {
           alignItems: "center",
         }}
       >
+        <PageTitle title='Login'></PageTitle>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>

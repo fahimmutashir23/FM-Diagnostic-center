@@ -11,6 +11,7 @@ import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import Loading from "../../../../Utils/Loading/Loading";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_API_KEY
@@ -70,6 +71,7 @@ const AddBanner = () => {
 
   return (
     <Box>
+      <PageTitle title='Add Banner'></PageTitle>
       <Typography
         fontWeight="bold"
         sx={{ textAlign: "center", mb: 3 }}

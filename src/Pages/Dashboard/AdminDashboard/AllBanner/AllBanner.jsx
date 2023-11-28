@@ -11,16 +11,19 @@ import Loading from "../../../../Utils/Loading/Loading";
 import { Button } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import Swal from "sweetalert2";
+import { useState } from "react";
+import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const AllBanner = () => {
   const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(false);
 
   const {
     data = [],
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["bookedTest"],
+    queryKey: ["banners"],
     queryFn: async () => {
       const res = await axiosSecure(`/banners`);
       return res.data;
@@ -56,13 +59,16 @@ const AllBanner = () => {
   };
 
   const handleDisplayBanner = async (id) => {
+    setLoading(true)
+
     const res = await axiosSecure.put(`/banners/${id}`);
-    console.log(res.data);
+    
     if (res.data.modifiedCount > 0) {
       refetch();
+      setLoading(false)
       Swal.fire({
         title: "Displayed",
-        text: "Your Banner is now Displayed.",
+        text: "Your Task is done",
         icon: "success",
       });
     }
@@ -70,6 +76,8 @@ const AllBanner = () => {
 
   return (
     <TableContainer component={Paper}>
+      <PageTitle title='All Banner'></PageTitle>
+      {loading && <Loading color="black" height="25" width="25"></Loading>}
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -91,8 +99,8 @@ const AllBanner = () => {
               </TableCell>
               <TableCell align="center">{banner.isActive}</TableCell>
               <TableCell align="center">
-                <Button onClick={() => handleDisplayBanner(banner._id)}>
-                  {banner.isActive === "false" ? 'Show Home' : 'Hide Home'}
+                 <Button onClick={() => handleDisplayBanner(banner._id)}>
+                  {banner.isActive === "false" ? 'Show Home' : ''}
                 </Button>
               </TableCell>
               <TableCell align="center">

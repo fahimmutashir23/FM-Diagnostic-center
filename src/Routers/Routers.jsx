@@ -23,6 +23,7 @@ import Details from "../Pages/Details/Details";
 import Blog from "../Pages/Blog/Blog";
 import Contact from "../Pages/Contact/Contact";
 import DoctorsMeet from "../Pages/DoctorsMeet/DoctorsMeet";
+import Report from "../Pages/Dashboard/UserDashboard/TestReport/Report";
 
 
 const Routers = createBrowserRouter([
@@ -62,6 +63,10 @@ const Routers = createBrowserRouter([
             {
                 path: '/doctorsMeet',
                 element: <DoctorsMeet></DoctorsMeet>
+            },
+            {
+                path: '/report/:testName',
+                element: <PrivetRoute><Report></Report></PrivetRoute>
             },
         ]
     },
