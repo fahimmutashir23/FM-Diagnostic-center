@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Paper, TextField } from "@mui/material";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
-import contactLogo from "../../assets/image/contactIcon.png";
+import contactLogo from "../../assets/image/doctor-vector.png";
 import { useState } from "react";
 import Loading from "../../Utils/Loading/Loading";
 import PageTitle from "../../Utils/PageTitle/PageTitle";
@@ -27,7 +27,7 @@ const Contact = () => {
           md={6}
           sx={{ display: "flex", justifyContent: "center", my: 6 }}
         >
-          <img src={contactLogo} alt="" style={{ width: "50%" }} />
+          <img src={contactLogo} alt="" style={{ width: "40%" }} />
         </Grid>
         <Grid item sm={12} md={6}>
           <Box

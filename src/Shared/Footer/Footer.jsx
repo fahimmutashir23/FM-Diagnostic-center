@@ -5,7 +5,8 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Logo from "../../Utils/Logo/Logo";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 
 const Footer = () => {
   return (
@@ -15,35 +16,37 @@ const Footer = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: 'center',
-        height: '150px'
+        alignItems: "center",
+        height: "250px",
       }}
     >
-      <Box sx={{ width: "100px" }}>
-        <Logo></Logo>
-      </Box>
-      <Box>
-        <BottomNavigationAction
-          label="Recents"
-          value="recents"
-          icon={<RestoreIcon />}
-        />
-        <BottomNavigationAction
-          label="Favorites"
-          value="favorites"
-          icon={<FavoriteIcon />}
-        />
-        <BottomNavigationAction
-          label="Nearby"
-          value="nearby"
-          icon={<LocationOnIcon />}
-        />
-        <BottomNavigationAction
-          label="Folder"
-          value="folder"
-          icon={<FolderIcon />}
-        />
-      </Box>
+          <Box sx={{ width: "150px" }}>
+            <Logo></Logo>
+          </Box>
+      <Grid container spacing={2} sx={{display: 'flex', alignItems: 'center'}}>
+        <Grid item sm={12} md={6} sx={{ textAlign: "center" }}>
+          <Typography sx={{ fontSize: "1.2rem", fontWeight: 'bold' }}>Social Link:</Typography>
+          <IconButton size="large">
+            <Facebook color="inherit" fontSize="inherit"></Facebook>
+          </IconButton>
+          <IconButton size="large">
+            <LinkedIn color="inherit" fontSize="inherit"></LinkedIn>
+          </IconButton>
+          <IconButton size="large">
+            <Instagram color="inherit" fontSize="inherit"></Instagram>
+          </IconButton>
+        </Grid>
+        
+        <Grid item sm={12} md={6} sx={{ textAlign: "center" }}>
+          <Typography sx={{ fontSize: "1.2rem", fontWeight: 'bold' }}>Address:</Typography>
+          <Typography sx={{}}>
+            FM Diagnostic Center, Dhanmondi, <br /> Dhaka-1205
+          </Typography>
+          <Typography sx={{}}>
+            +880 1581 868984
+          </Typography>
+        </Grid>
+      </Grid>
       <Typography>Copyright © 2023 - All right reserved</Typography>
     </BottomNavigation>
   );
