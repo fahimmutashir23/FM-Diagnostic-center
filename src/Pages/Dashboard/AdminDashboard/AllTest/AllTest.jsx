@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { Delete, Update } from "@mui/icons-material";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
@@ -89,9 +89,7 @@ const AllTest = () => {
       return res.data;
     },
   });
-  if (isPending) {
-    return <Loading color="black" mt={4} height="40" width="40"></Loading>;
-  }
+
 
   const handleDelete = async (id) => {
     Swal.fire({
@@ -166,6 +164,14 @@ const AllTest = () => {
       }
     }
   };
+
+  useEffect(()=>{
+    refetch()
+  }, [page])
+
+  if (isPending) {
+    return <Loading color="black" mt={4} height="40" width="40"></Loading>;
+  }
 
   return (
     <TableContainer component={Paper} sx={{ overflow: "hidden" }}>

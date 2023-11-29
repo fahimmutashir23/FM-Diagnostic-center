@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../../Utils/Loading/Loading";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageTitle from "../../../../Utils/PageTitle/PageTitle";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,15 +52,19 @@ const Reservation = () => {
       return res.data;
     },
   });
-  if (isPending) {
-    return <Loading color="black"></Loading>;
-  }
+  
 
   const handleSearch = (e) => {
     e.preventDefault();
     const result = e.target.search.value;
     setSearch(result)
   }
+
+
+  useEffect(()=> {
+    refetch()
+  }, [search])
+
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -105,6 +109,7 @@ const Reservation = () => {
     const res = await axiosSecure.put(`/payments/${test._id}`);
     refetch();
     if (res.data.modifiedCount > 0) {
+      refetch()
       Swal.fire({
         position: "top",
         icon: "success",
@@ -114,6 +119,10 @@ const Reservation = () => {
       });
     }
   };
+
+  if (isPending) {
+    return <Loading color="black"></Loading>;
+  }
 
 
   return (
