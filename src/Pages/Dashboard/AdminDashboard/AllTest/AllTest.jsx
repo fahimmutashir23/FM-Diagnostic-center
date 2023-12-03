@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import PageTitle from "../../../../Utils/PageTitle/PageTitle";
+import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -62,6 +63,7 @@ const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
 
 const AllTest = () => {
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [id, setId] = useState("");
@@ -133,7 +135,7 @@ const AllTest = () => {
     const slot = e.target.slot.value;
 
     const imgFile = { image: photo };
-    const res = await axiosSecure.post(imgUploadUrl, imgFile, {
+    const res = await axiosPublic.post(imgUploadUrl, imgFile, {
       headers: {
         "content-type": "multipart/form-data",
       },

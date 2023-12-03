@@ -3,6 +3,7 @@ import SectionTitle from "../../../../Components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import PageTitle from "../../../../Utils/PageTitle/PageTitle";
+import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 
 const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_API_KEY
@@ -10,6 +11,7 @@ const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
 
 const AddTest = () => {
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ const AddTest = () => {
     const slot = e.target.slot.value;
 
     const imgFile = { image: photo };
-    const res = await axiosSecure.post(imgUploadUrl, imgFile, {
+    const res = await axiosPublic.post(imgUploadUrl, imgFile, {
       headers: {
         "content-type": "multipart/form-data",
       },
