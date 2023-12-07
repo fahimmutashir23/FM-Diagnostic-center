@@ -5,12 +5,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../../Utils/Logo/Logo";
 import {
   AddBox,
   AddCircleSharp,
+  ArrowForwardIos,
   Biotech,
   CalendarMonth,
   CalendarMonthOutlined,
@@ -19,38 +19,37 @@ import {
   Rectangle,
 } from "@mui/icons-material";
 import useAdmin from "../../../Hooks/useAdmin";
+import { useState } from "react";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Sidebar = () => {
-  const [state, setState] = useState({
-    left: true,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
-  const [isAdmin] = useAdmin()
+  const [isAdmin] = useAdmin();
+  const [open, setOpen] = useState(true);
 
   return (
-    <div>
-      <Box
-        sx={{ width: "250px", backgroundColor: "#BEADFA", height: "100%"}}
-        role="presentation"
-        onClick={toggleDrawer(false)}
-        onKeyDown={toggleDrawer(false)}
+    <div className="relative">
+      {open ? (
+        <button
+          className="absolute transition-all duration-1000 top-60 left-56 bg-blue-700 py-2 px-1 text-white rounded-l-3xl z-10"
+          onClick={() => setOpen(!open)}
+        >
+          <ArrowBackIosIcon />
+        </button>
+      ) : (
+        <button className="absolute top-60 left-2 bg-blue-700 py-2 px-1 text-white rounded-r-3xl transition-all duration-1000 z-10" onClick={() => setOpen(!open)}>
+          <ArrowForwardIos />
+        </button>
+      )}
+      <div
+        className={`bg-blue-400  min-h-screen ${
+          open ? "w-64 transition-all duration-1000" : "absolute w-64 -translate-x-80 transition-all duration-1000"
+        } `}
       >
-        <Box sx={{ width: "150px", mx: "auto"}}>
+        <Box sx={{ width: "150px", mx: "auto" }}>
           <Logo></Logo>
         </Box>
         {isAdmin ? (
-          <List>
+          <ul>
             <Link
               to="/dashboard"
               style={{ textDecoration: "none", color: "black" }}
@@ -148,7 +147,7 @@ const Sidebar = () => {
                 </ListItemButton>
               </ListItem>
             </Link>
-          </List>
+          </ul>
         ) : (
           <List>
             <Link
@@ -209,9 +208,8 @@ const Sidebar = () => {
           </List>
         )}
 
-
         <List>
-        <Divider />
+          <Divider />
           <Link to="/" style={{ textDecoration: "none", color: "black" }}>
             <ListItem disablePadding>
               <ListItemButton>
@@ -223,7 +221,7 @@ const Sidebar = () => {
             </ListItem>
           </Link>
         </List>
-      </Box>
+      </div>
     </div>
   );
 };

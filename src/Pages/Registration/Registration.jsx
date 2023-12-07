@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Utils/Loading/Loading";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import PageTitle from "../../Utils/PageTitle/PageTitle";
+import { RemoveRedEye, VisibilityOff } from "@mui/icons-material";
 
 const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
   import.meta.env.VITE_IMG_API_KEY
@@ -25,8 +26,9 @@ const Registration = () => {
   const [blood, setBlood] = useState("A+");
   const [districtData, setDistrictData] = useState([]);
   const [district, setDistrict] = useState("Dhaka");
+  const [showPass, setShowPass] = useState(false);
   const [upozila, setUpozila] = useState("");
-  const [upozilaData, setUpozilaData] = useState([])
+  const [upozilaData, setUpozilaData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { signUpUser, logOutUser, updateUser } = useAuth();
@@ -39,8 +41,10 @@ const Registration = () => {
   const handleDistrictChange = async (event) => {
     setDistrict(event.target.value);
 
-    const res = await axiosPublic(`/upozila?district_id=${event.target.value.id}`)
-    setUpozilaData(res.data)
+    const res = await axiosPublic(
+      `/upozila?district_id=${event.target.value.id}`
+    );
+    setUpozilaData(res.data);
   };
   const handleUpozilaChange = (event) => {
     setUpozila(event.target.value);
@@ -51,7 +55,6 @@ const Registration = () => {
       .then((res) => res.json())
       .then((data) => setDistrictData(data));
   }, []);
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +67,6 @@ const Registration = () => {
     const photo = e.target.photo.files[0];
     const password = e.target.password.value;
     const confirm_password = e.target.confirm_password.value;
-    
 
     if (password !== confirm_password) {
       setLoading(false);
@@ -78,41 +80,40 @@ const Registration = () => {
       },
     });
     if (res.data.data.display_url) {
+      signUpUser(email, password)
+        .then((result) => {
+          if (result.user) {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: "Your Registration has successful",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            updateUser({
+              displayName: name,
+              photoURL: res.data.data.display_url,
+            });
+            const userInfo = {
+              name: name,
+              email: email,
+              district: district,
+              upozila: upozila,
+              blood: blood,
+              profileImage: res.data.data.display_url,
+              active_status: "active",
+            };
 
-      signUpUser(email, password).then((result) => {
-        if (result.user) {
-          Swal.fire({
-            position: "top",
-            icon: "success",
-            title: "Your Registration has successful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          updateUser({
-            displayName: name,
-            photoURL: res.data.data.display_url,
-          });
-          const userInfo = {
-            name : name,
-            email: email,
-            district : district,
-            upozila : upozila,
-            blood : blood,
-            profileImage : res.data.data.display_url,
-            active_status : "active"
-          };
-          
-          axiosPublic.post('/users', userInfo)
-          .then(() => { })
+            axiosPublic.post("/users", userInfo).then(() => {});
 
-          logOutUser() && navigate("/login");
+            logOutUser() && navigate("/login");
+            e.target.reset();
+          }
+        })
+        .catch(() => {
+          setErrorMsg("This email Already used");
           e.target.reset();
-        }
-      })
-      .catch(() => {
-        setErrorMsg("This email Already used")
-        e.target.reset()
-      })
+        });
     } else {
       return setLoading(true);
     }
@@ -131,7 +132,7 @@ const Registration = () => {
           alignItems: "center",
         }}
       >
-        <PageTitle title='SinUp'></PageTitle>
+        <PageTitle title="SinUp"></PageTitle>
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -226,26 +227,33 @@ const Registration = () => {
             type="file"
             autoComplete="current-password"
           />
+          <div className="relative">
           <TextField
             margin="normal"
             required
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPass? "text" : "password"}
             id="password"
             autoComplete="current-password"
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="Confirm_password"
-            label="Confirm Password"
-            type="password"
-            id="confirm_password"
-            autoComplete="current-password"
-          />
+           <span className="absolute top-8 right-3 text-gray-400" onClick={()=> setShowPass(!showPass)}>{showPass ? <VisibilityOff /> : <RemoveRedEye />}</span>
+          </div>
+
+          <div className="relative">
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="Confirm_password"
+              label="Confirm Password"
+              type={showPass? "text" : "password"}
+              id="confirm_password"
+              autoComplete="current-password"
+            />
+            <span className="absolute top-8 right-3 text-gray-400" onClick={()=> setShowPass(!showPass)}>{showPass ? <VisibilityOff /> : <RemoveRedEye />}</span>
+          </div>
           <Typography sx={{ color: "red" }}>{errorMsg}</Typography>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -265,9 +273,7 @@ const Registration = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link variant="body2">
-                Forgot password?
-              </Link>
+              <Link variant="body2">Forgot password?</Link>
             </Grid>
             <Grid item>
               <Link to="/login" variant="body2">

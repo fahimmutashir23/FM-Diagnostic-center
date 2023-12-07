@@ -1,10 +1,9 @@
 import {
-    Box,
+  Box,
   Button,
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Grid,
   Modal,
   Paper,
@@ -19,19 +18,16 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAuth from "../../Hooks/useAuth";
 import PageTitle from "../../Utils/PageTitle/PageTitle";
 const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    bgcolor: "#BEADFA",
-    width: 400,
-    border: "2px solid white",
-    boxShadow: 24,
-    p: 4,
-  };
-
-
-
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "#BEADFA",
+  width: 400,
+  border: "2px solid white",
+  boxShadow: 24,
+  p: 4,
+};
 
 const DoctorsMeet = () => {
   const axiosSecure = useAxiosSecure();
@@ -64,12 +60,13 @@ const DoctorsMeet = () => {
           <Grid key={test._id} item sm={12} md={4}>
             <Card sx={{ backgroundColor: "#A6F6FF", m: 1 }}>
               <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="240"
-                  image={test.doctor_img}
-                  alt="green iguana"
-                />
+                <div className="h-72 w-full overflow-hidden">
+                  <img
+                    src={test.doctor_img}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     {test.doctor_name}
@@ -83,20 +80,24 @@ const DoctorsMeet = () => {
                   </Typography>
                   <Typography
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
                       fontSize: "18px",
                       fontWeight: "bold",
                     }}
                   >
                     Test rate : ${test.doctors_fee}
-                    {status === "active" ? (
-                      <Button onClick={() => setOpen(true)} variant="contained">Details</Button>
-                    ) : (
-                      <Button disabled variant="contained">Details</Button>
-                    )}
                   </Typography>
+                  <div className="flex justify-between">
+                    <Button variant="contained">Doctor Details</Button>
+                    {status === "active" ? (
+                      <Button onClick={() => setOpen(true)} variant="contained">
+                        Join
+                      </Button>
+                    ) : (
+                      <Button disabled variant="contained">
+                        Join
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </CardActionArea>
             </Card>
@@ -119,7 +120,10 @@ const DoctorsMeet = () => {
           >
             Request to Meet
           </Typography>
-          <Box component={"form"} sx={{ mb: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box
+            component={"form"}
+            sx={{ mb: 1, display: "flex", flexDirection: "column", gap: 1 }}
+          >
             <input type="text" name="name" placeholder="Your Name" />
             <input type="email" name="email" placeholder="Your Email" />
             <input type="submit" value="Submit" />

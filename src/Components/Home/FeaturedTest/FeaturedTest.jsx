@@ -2,7 +2,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Grid,
   Typography,
 } from "@mui/material";
@@ -19,15 +18,14 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 
-
-
 const FeaturedTest = () => {
   const axiosPublic = useAxiosPublic();
-  const {user} = useAuth();
-  const [status, setStatus] = useState('');
+  const { user } = useAuth();
+  const [status, setStatus] = useState("");
 
-  axiosPublic(`/users?email=${user?.email}`)
-  .then(res => {setStatus(res.data[0]?.active_status)})
+  axiosPublic(`/users?email=${user?.email}`).then((res) => {
+    setStatus(res.data[0]?.active_status);
+  });
 
   const { data = [], isPending } = useQuery({
     queryKey: ["featured"],
@@ -40,7 +38,7 @@ const FeaturedTest = () => {
   if (isPending) {
     return <Loading color="black" height="40" width="40" mt={6}></Loading>;
   }
-  
+
   return (
     <Grid>
       <SectionTitle title="Featured Test"></SectionTitle>
@@ -53,15 +51,48 @@ const FeaturedTest = () => {
         >
           {data.map((test) => (
             <SwiperSlide key={test._id}>
-              {status === 'active' ? <Link to={`/details/${test._id}`} style={{textDecoration: 'none'}}>
+              {status === "active" ? (
+                <Link
+                  to={`/details/${test._id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Card sx={{ backgroundColor: "#FFA3FD", m: 1 }}>
+                    <CardActionArea>
+                      <div className="h-56 w-full overflow-hidden">
+                        <img
+                          src={test.image}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <CardContent>
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                          sx={{ height: "60px" }}
+                        >
+                          {test.test_name}
+                        </Typography>
+                        <Typography
+                          sx={{ fontWeight: "bold", fontSize: "18px" }}
+                        >
+                          Available Slot : {test.slot}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Link>
+              ) : (
                 <Card sx={{ backgroundColor: "#FFA3FD", m: 1 }}>
                   <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={test.image}
-                      alt="green iguana"
-                    />
+                    <div className="h-56 w-full overflow-hidden">
+                      <img
+                        src={test.image}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
                     <CardContent>
                       <Typography
                         gutterBottom
@@ -77,31 +108,7 @@ const FeaturedTest = () => {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-              </Link> :
-              <Card sx={{ backgroundColor: "#FFA3FD", m: 1 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={test.image}
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                    sx={{ height: "60px" }}
-                  >
-                    {test.test_name}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
-                    Available Slot : {test.slot}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-              }
+              )}
             </SwiperSlide>
           ))}
         </Swiper>

@@ -14,7 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Utils/Loading/Loading";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -58,10 +57,6 @@ const AllTestPage = () => {
       return currentData;
     },
   });
-
-  if (isPending) {
-    return <Loading color="black"></Loading>;
-  }
   refetch();
 
   const handleSearch = (e) => {
@@ -70,6 +65,10 @@ const AllTestPage = () => {
     setSearch(result);
     e.target.reset();
   };
+
+  if (isPending) {
+    return <Loading color="black"></Loading>;
+  }
 
   return (
     <Box>
@@ -109,16 +108,14 @@ const AllTestPage = () => {
       </Paper>
 
       <Grid container sx={{ margin: "10px 0px" }}>
+        
         {data.map((test) => (
           <Grid key={test._id} item sm={12} md={4}>
             <Card sx={{ backgroundColor: "#A6F6FF", m: 1 }}>
               <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={test.image}
-                  alt="green iguana"
-                />
+                <div className="h-56 w-full overflow-hidden">
+                  <img src={test.image} alt="" className="h-full w-full object-cover" />
+                </div>
                 <CardContent>
                   <Typography
                     gutterBottom
